@@ -30,6 +30,9 @@ Header.propTypes = {
 }
 
 var Counter = React.createClass({
+  propTypes: {
+      score: React.PropTypes.number.isRequired,
+  },
   render: function() {
     return (
       <div className="counter">
@@ -43,9 +46,6 @@ var Counter = React.createClass({
 
 
 
-Counter.propTypes = {
-  score: React.PropTypes.number.isRequired,
-}
 
 function Player(props) {
   return (
