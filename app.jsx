@@ -88,8 +88,8 @@ var Application = React.createClass({
     }
   },
 
-  onScoreChange: function(delta) {
-    console.log('onScoreChange', delta)
+  onScoreChange: function(index, delta) {
+    console.log('onScoreChange', index, delta)
   },
 
   render: function() {
@@ -98,13 +98,14 @@ var Application = React.createClass({
         <Header title={this.props.title}/>
 
         <div className="players">
-          {this.state.players.map(function(player) {
+          {this.state.players.map(function(player, index) {
             return (
               <Player
-                onScoreChange={this.onScoreChange}
                 name={player.name}
                 score={player.score}
-                key={player.id} />
+                key={player.id}
+                onScoreChange={function(delta) {this.onScoreChange(index, delta)}.bind(this)}
+                />
             );
           }.bind(this))}
         </div>
