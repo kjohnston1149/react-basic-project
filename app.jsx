@@ -26,20 +26,29 @@ var Stopwatch = React.createClass({
     }
   },
 
-  render: function() {
-    var startStop;
-    if (this.state.running) {
-      startStop = <button>Stop</button>
-    } else {
-      startStop = <button>Start</button>
-    }
+  onStart: function() {
 
+  },
+
+  onStop: function() {
+
+  },
+
+  onReset: function() {
+
+  },
+
+  render: function() {
     return (
       <div className="stopwatch">
         <h2>Stopwatch</h2>
         <div className="stopwatch-time">0</div>
-        { startStop }
-        <button>Reset</button>
+        {this.state.running ?
+          <button onclick={this.onStop}>Stop</button>
+          :
+          <button onClick={this.onStart}>Start</button>
+        }
+        <button onClick={this.onReset}>Reset</button>
       </div>
     );
   }
