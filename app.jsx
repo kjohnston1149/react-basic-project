@@ -16,6 +16,8 @@ var PLAYERS = [
   },
 ];
 
+var nextId = 4;
+
 var AddPlayerForm= React.createClass({
   propTypes: {
     onAdd: React.PropTypes.func.isRequired,
@@ -33,7 +35,8 @@ var AddPlayerForm= React.createClass({
 
   onSubmit: function(e) {
     e.preventDefault();
-    // this.props.onAdd();
+    this.props.onAdd(this.state.name);
+    this.setState({name: ""});
   },
   render: function () {
     return (
@@ -110,6 +113,7 @@ function Player(props) {
   return (
     <div className="player">
       <div className="player-name">
+        <a className="remove-player" onClick={props.onRemove}>X</a>
         {props.name}
       </div>
       <div className="player-score">
@@ -123,6 +127,7 @@ Player.propTypes = {
   name: React.PropTypes.string.isRequired,
   score: React.PropTypes.number.isRequired,
   onScoreChange: React.PropTypes.func.isRequired,
+  onRemove: React.PropTypes.func.isRequired,
 }
 
 var Application = React.createClass({
@@ -153,6 +158,23 @@ var Application = React.createClass({
     this.setState(this.state);
   },
 
+  onPlayerAdd: function(name) {
+    console.log('player added', name);
+    this.state.players.push({
+      name: name,
+      score: 0,
+      id: nextId,
+    });
+    this.setState(this.state);
+    nextId += 1;
+  },
+
+  onRemovePlayer: function(index) {
+    this.state.players.splice(index, 1);
+    this.setState(this.state);
+    console.log('remove', index);
+  },
+
   render: function() {
     return (
       <div className="scoreboard">
@@ -162,6 +184,7 @@ var Application = React.createClass({
           {this.state.players.map(function(player, index) {
             return (
               <Player
+                onRemove={function() {this.onRemovePlayer(index)}.bind(this)}
                 name={player.name}
                 score={player.score}
                 key={player.id}
@@ -170,7 +193,7 @@ var Application = React.createClass({
             );
           }.bind(this))}
         </div>
-        <AddPlayerForm />
+        <AddPlayerForm onAdd={this.onPlayerAdd} />
       </div>
     );
   }
